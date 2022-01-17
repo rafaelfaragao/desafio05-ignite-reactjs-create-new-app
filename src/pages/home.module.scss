@@ -1,1 +1,58 @@
-// TODO
+.posts {
+  margin: 3rem auto 4rem;
+  max-width: 720px;
+
+  a {
+    display: block;
+
+    & + a {
+      margin-top: 1rem;
+      padding-top: 2rem;
+    }
+
+    strong {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--heading);
+    }
+
+    h3 {
+      font-size: 18px;
+      line-height: 22px;
+      margin-top: 0.5rem;
+      font-weight: normal;
+    }
+
+    .postInfo {
+      display: flex;
+      align-items: center;
+      margin-top: 1.5rem;
+
+      svg:first-child {
+        margin-right: 0.5rem;
+      }
+
+      time,
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        line-height: 18px;
+      }
+
+      time {
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+
+.maisPosts {
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 600;
+  color: var(--highlight);
+  text-decoration: none;
+  cursor: pointer;
+}
