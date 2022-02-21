@@ -7,7 +7,7 @@ import { getPrismicClient } from '../../services/prismic';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
-import { FiCalendar, FiUser } from 'react-icons/fi';
+import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import { RichText } from 'prismic-dom';
 
 interface Post {
@@ -34,10 +34,27 @@ interface PostProps {
 //export default function Post({post}:PostProps) {
   export default function Post({post}:PostProps) {
 //   // TODO
+ var qtdPalavras;
+ post.data.content.reduce((tudo, atual)=>{
+  
+  let arrayTexto1 = RichText.asText(tudo.body)
+  let arrayTexto2= RichText.asText(atual.body)
+  let qtdArray1 = arrayTexto1.split(" ")
+  let qtdArray2 = arrayTexto2.split(" ")
+
+  //console.log(qtdArray1.length, qtdArray2.length)
+  qtdPalavras = Number(qtdArray1.length) + Number(qtdArray2.length)
+  return tudo
+ })
+
+ console.log(qtdPalavras)
+ const minLeitura = Math.ceil(Number(qtdPalavras)/200)
+ console.log(minLeitura)
+
   return(
     <>
       <Header />
-      {console.log(post)}
+      {/* {console.log(post.data.content)} */}
       <div className={styles.banner}>
         <img src={post.data.banner.url} alt="banner" />
       </div>
@@ -48,14 +65,21 @@ interface PostProps {
             <div className={styles.postInfo}>
               <time><FiCalendar/> {post.first_publication_date}</time>
               <p><FiUser/> {post.data.author}</p>
+              <p><FiClock/></p>
             </div>
-            <div className={styles.merda}>
-              {post.data.content.map(div => {
-                <div>
-                  <h2>{div.heading}</h2>
-                </div>
+            <div className={styles.content}>
+              {post.data.content.map((content, index) => {
+                let body = RichText.asHtml(content.body)
+                return (
+                  <>
+                    <h2 key={index}>{content.heading}</h2>
+                    <div dangerouslySetInnerHTML={{__html:body}}></div>
+                    {/* {content.body.map((body, index) => (
+                      <p key={index} dangerouslySetInnerHTML={{__html:body.text}}></p>
+                    ))} */}
+                  </>
+                )
               })}
-              
             </div>
         </div>
       </div>
@@ -97,13 +121,12 @@ export const getStaticProps: GetStaticProps = async context => {
     }
   }
     
-  console.log(post)
+  //console.log(JSON.stringify(post, null, 2));
     
 
   return {
     props: {
       post,
     },
-    revalidate: 60*30 // 30 minutes
   }
 };
